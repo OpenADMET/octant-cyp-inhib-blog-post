@@ -1,0 +1,16 @@
+scratch/
+build/*.json
+figures/*.html
+.Rproj.user
+.Rhistory
+
+# SDD scratch workspace
+.superpowers/
+
+# Quarto
+/.quarto/
+_freeze/
+_site/
+**/*.quarto_ipynb
+index_files/
+*.rmarkdown

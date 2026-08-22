@@ -1,0 +1,149 @@
+project:
+  output-dir: _site
+  render:
+    - index.qmd
+  resources:
+    - post/assets/openadmet-logo.png
+    - post/assets/og-preview.png
+    - figures/embed/**
+
+format:
+  html:
+    # No `website: site-url:` is set, so Quarto's own open-graph/twitter-card
+    # keys would emit nothing. All nine social tags are declared by hand in the
+    # .qmd's include-in-header instead, where they carry the absolute URLs that
+    # crawlers require -- a relative image path would not resolve for them.
+    theme:
+      - lux
+      - post/styles.css
+    grid:
+      body-width: 850px
+    toc: true
+    toc-location: left
+    toc-expand: 2
+    toc-depth: 4
+    smooth-scroll: true
+    number-sections: false
+    lightbox: true
+    include-before-body:
+      - text: |
+          <div class="progress-header">
+            <a href="https://openadmet.ghost.io/"><img src="post/assets/openadmet-logo.png" alt="OpenADMET" class="progress-header-logo"></a>
+            <span class="progress-header-title">Lowering Inhibitions, One CYP at a Time</span>
+            <div class="reading-progress-track"><div class="reading-progress-fill"></div></div>
+          </div>
+          <a href="https://openadmet.ghost.io/"><img src="post/assets/openadmet-logo.png" alt="OpenADMET logo" class="header-logo"></a>
+    include-after-body:
+      - text: |
+          <script>
+            // Enable ToC figure entries after first scroll (keeps ToC clean on load)
+            window.addEventListener('scroll', function() {
+              document.body.classList.add('toc-scrolled');
+            }, { once: true });
+
+            // Progress header: show after scrolling past hero, update progress bar
+            (function() {
+              var header = document.querySelector('.progress-header');
+              var fill = document.querySelector('.reading-progress-fill');
+              var tocSidebar = document.getElementById('quarto-sidebar-toc-left');
+              if (!header || !fill) return;
+              var threshold = 300; // px before header appears
+              window.addEventListener('scroll', function() {
+                var scrollTop = window.scrollY;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var pct = docHeight > 0 ? Math.min(scrollTop / docHeight * 100, 100) : 0;
+                fill.style.width = pct + '%';
+                var past = scrollTop > threshold;
+                header.classList.toggle('visible', past);
+                if (tocSidebar) tocSidebar.classList.toggle('toc-visible', past);
+              });
+            })();
+
+            // Copy figure captions into lightbox descriptions
+            document.querySelectorAll('.figure-caption').forEach(function(cap) {
+              var prev = cap.previousElementSibling;
+              if (!prev) return;
+              var link = prev.querySelector('a.lightbox');
+              if (!link) return;
+              link.setAttribute('data-description', cap.innerHTML);
+            });
+
+            // Size the full-bleed iframes to their content. Both documents come
+            // from the same origin, so the parent can measure the child directly and
+            // the embedded figure needs no changes. Over file:// the read throws and
+            // the CSS min-height applies.
+            //
+            // Measure the deepest child of the child's <body>, NOT
+            // documentElement.scrollHeight: scrollHeight is floored at the iframe's
+            // own height, so it can never report a value smaller than the current
+            // box. Using it meant the frame could grow but never shrink, which left
+            // ~100px of dead white below the figure.
+            //
+            // The embed's detail panel is ~200px until a point is hovered and then
+            // grows past 800px, so one measurement on load is not enough.
+            // ResizeObserver is the obvious tool and is deliberately NOT used here:
+            // observers constructed in the parent realm AND in the child realm were
+            // both verified to deliver zero callbacks for elements inside the child
+            // document, while the element demonstrably resized. So instead we refit
+            // after the interactions that can change the child's height, measuring a
+            // few times because the panel renders asynchronously.
+            (function fullbleedAutosize() {
+              var frames = document.querySelectorAll('.figure-fullbleed iframe');
+              if (!frames.length) return;
+
+              function contentHeight(doc) {
+                var kids = Array.prototype.filter.call(doc.body.children, function(e) {
+                  return e.getBoundingClientRect().height > 0;
+                });
+                if (!kids.length) return 0;
+                var deepest = 0;
+                kids.forEach(function(e) {
+                  var b = e.getBoundingClientRect().bottom;
+                  if (b > deepest) deepest = b;
+                });
+                var mb = parseFloat(getComputedStyle(doc.body).marginBottom) || 0;
+                return Math.ceil(deepest + mb);
+              }
+
+              function fit(f) {
+                try {
+                  var d = f.contentDocument;
+                  if (!d || !d.body) return;
+                  var h = contentHeight(d);
+                  if (h > 0 && Math.abs(h + 2 - f.clientHeight) > 1) {
+                    f.style.height = (h + 2) + 'px';
+                  }
+                } catch (e) { /* cross-origin: keep the CSS fallback */ }
+              }
+
+              // Re-measure a few times: the detail panel populates asynchronously.
+              function settle(f) {
+                [0, 200, 600, 1200].forEach(function(ms) {
+                  setTimeout(function() { fit(f); }, ms);
+                });
+              }
+
+              function wire(f) {
+                try {
+                  var d = f.contentDocument;
+                  if (!d) return;
+                  ['mouseover', 'mouseout', 'click', 'change', 'input'].forEach(function(ev) {
+                    d.addEventListener(ev, function() { settle(f); }, true);
+                  });
+                } catch (e) { /* ignore */ }
+              }
+
+              frames.forEach(function(f) {
+                f.addEventListener('load', function() { settle(f); wire(f); });
+                if (f.contentDocument && f.contentDocument.readyState === 'complete') {
+                  settle(f); wire(f);
+                }
+              });
+
+              var t;
+              window.addEventListener('resize', function() {
+                clearTimeout(t);
+                t = setTimeout(function() { frames.forEach(fit); }, 150);
+              });
+            })();
+          </script>

@@ -1,0 +1,56 @@
+:root{--sig:#CC3311;--notsig:#BBBBBB;--inactive:#3089FB;--active:#228833;--fg:#222;--bg:#fff;--panel:#f6f7f9;--grid:#e5e7eb;--muted:#888}
+/* Light is the default regardless of the viewer's OS setting: this figure is
+   embedded in a blog post whose own page is light, and a dark figure on a light
+   page reads as a bug. Dark is still available via the toggle, which sets
+   data-theme on <html>. */
+:root[data-theme="dark"]{--fg:#e6e6e6;--bg:#16181c;--panel:#1f2329;--grid:#333;--muted:#8a8f98}
+:root[data-theme="light"]{--fg:#222;--bg:#fff;--panel:#f6f7f9;--grid:#e5e7eb;--muted:#888}
+*{box-sizing:border-box}body{margin:0;font:13px/1.4 system-ui,sans-serif;color:var(--fg);background:var(--bg)}
+/* Three deliberate rows -- classes, controls, legend -- rather than one flex
+   run that wraps wherever the viewport happens to end. Capped at the width of
+   the content below (the 2x2 facet grid plus the detail column) so the header
+   does not sprawl past the figure on a wide screen. --facets-w must track W in
+   app.js: two panels of W plus the 8px grid gap. */
+:root{--facets-w:728px;--detail-w:506px}
+#controls{display:flex;flex-direction:column;gap:7px;align-items:stretch;
+  padding:10px 12px;border-bottom:1px solid var(--grid);
+  max-width:calc(var(--facets-w) + var(--detail-w) + 24px)}   /* + main gap and left padding */
+#controls .ctl-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;row-gap:6px}
+#controls h1{font-size:15px;margin:0}
+#class-toggles{display:flex;gap:8px;flex-wrap:wrap;font-size:12px}
+#controls input[type="number"]{width:4.5em}
+#legend{display:flex;gap:12px;align-items:center;font-size:12px;flex-wrap:wrap}
+#legend .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+#legend .dot.notsig{background:var(--notsig);opacity:.5}
+#legend .dot.sig{background:var(--sig);opacity:.85}
+#class-legend{display:flex;gap:10px;flex-wrap:wrap}
+#class-legend .legend-item{display:inline-flex;align-items:center;gap:2px}
+#class-legend svg{vertical-align:middle;color:currentColor}
+#theme-toggle{margin-left:auto;flex:0 0 auto;font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--grid);border-radius:6px;padding:3px 10px;cursor:pointer}
+main{display:flex;gap:12px;padding:12px;align-items:flex-start;flex-wrap:wrap}
+#facets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#facets figure { margin: 0; }
+#facets figcaption { font: 600 13px system-ui; text-align: center; padding-bottom: 2px; }
+.facet-empty { fill: var(--muted); font: 12px system-ui; }
+#detail-region{display:flex;flex-direction:column;gap:8px}
+/* flex-basis is the MAIN axis, and #detail-region is a column - so `flex:0 0
+   460px` here set a fixed HEIGHT of 460px, not a width. The panel held 695px of
+   content in a 458px box and the DRC axis and shift plot spilled outside the
+   rounded background. Width is already set on the line; the panel just needs to
+   size to its content vertically. */
+#detail{width:506px;flex:0 0 auto;background:var(--panel);border:1px solid var(--grid);border-radius:8px;padding:10px;min-height:200px}
+#detail-head-row{display:flex;flex-direction:column;gap:8px;align-items:stretch;margin-bottom:6px}
+/* Fixed light panel, not var(--bg): RDKit draws black bonds/labels with no
+   background, which would be nearly invisible on the dark theme's #16181c
+   body — a chemist also just expects a white structure panel regardless of
+   page theme. */
+#structure{flex:0 0 auto;align-self:center;width:280px;height:180px;background:#fff;color:#333;border:1px solid var(--grid);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;overflow:hidden}
+#structure svg{display:block}
+#detail-head{font-size:12px}
+#detail-stats{font-size:12px;margin:6px 0 2px}
+#detail-head .prov{opacity:.65}
+.axis text{fill:var(--fg)}.axis line,.axis path{stroke:var(--grid)}
+.refline{stroke:var(--grid);stroke-dasharray:4 3}
+.pt{cursor:pointer}
+.badge{padding:1px 6px;border-radius:4px;color:#fff;font-weight:600}
+.badge.y{background:var(--sig)}.badge.n{background:var(--notsig)}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CYP TDI-shift explorer</title>
+<style>/*__CSS__*/</style>
+</head>
+<body>
+<header id="controls">
+  <div class="ctl-row">
+    <h1>TDI-shift explorer</h1>
+    <span id="class-toggles">
+      <label><input type="checkbox" class="class-toggle" value="Unknown" checked> Unknown</label>
+      <label><input type="checkbox" class="class-toggle" value="TDI (control)" checked> TDI (control)</label>
+      <label><input type="checkbox" class="class-toggle" value="Non-TDI (control)" checked> Non-TDI (control)</label>
+      <label><input type="checkbox" class="class-toggle" value="TDI (literature)" checked> TDI (literature)</label>
+      <label><input type="checkbox" class="class-toggle" value="Non-TDI (literature)" checked> Non-TDI (literature)</label>
+    </span>
+    <button type="button" id="theme-toggle">◐ theme</button>
+  </div>
+  <div class="ctl-row">
+    <label>TDI call: <select id="mode-select">
+      <option value="threshold" selected>Method 1 — Thresholds only</option>
+      <option value="gap">Method 2 — Disjoint 95% CIs</option>
+      <option value="bayes">Method 3 — Bayesian shift interval</option>
+    </select></label>
+    <label>pIC50 shift &gt; <input id="shift-thr" type="number" step="0.05" value="0.301"></label>
+    <label>TDI condition pIC50 &gt; <input id="y-thr" type="number" step="0.1" value="4.3"></label>
+    <label><input type="checkbox" id="sig-only"> significant only</label>
+    <label>DRC y: <input type="number" id="drc-ymin" step="0.1" style="width:4.2em"> to <input type="number" id="drc-ymax" step="0.1" style="width:4.2em"></label>
+    <input type="search" id="search" placeholder="compound…">
+  </div>
+  <div class="ctl-row">
+    <span id="legend">
+      <span class="legend-item"><i class="dot notsig"></i>not called TDI</span>
+      <span class="legend-item"><i class="dot sig"></i>called TDI</span>
+      <span id="class-legend"></span>
+    </span>
+    <span id="count"></span>
+  </div>
+</header>
+<main>
+  <section id="facets">
+    <figure><figcaption>CYP1A2</figcaption><svg id="panel-CYP1A2"></svg></figure>
+    <figure><figcaption>CYP2C9</figcaption><svg id="panel-CYP2C9"></svg></figure>
+    <figure><figcaption>CYP2D6</figcaption><svg id="panel-CYP2D6"></svg></figure>
+    <figure><figcaption>CYP3A4</figcaption><svg id="panel-CYP3A4"></svg></figure>
+  </section>
+  <section id="detail-region">
+    <aside id="detail">
+      <div id="detail-empty">Hover a point…</div>
+      <div id="detail-body" hidden>
+        <div id="detail-head-row">
+          <div id="structure"></div>
+          <div id="detail-head"></div>
+        </div>
+        <svg id="marginal"></svg>
+        <svg id="curve-plot"></svg>
+        <div id="detail-stats"></div>
+        <svg id="shift-plot"></svg>
+      </div>
+    </aside>
+  </section>
+</main>
+<script>/*__D3__*/</script>
+<script>/*__RDKIT__*/</script>
+<script>window.RDKIT_WASM_B64=/*__RDKIT_WASM_B64__*/;</script>
+<script>window.FIGURE_INDEX=/*__INDEX__*/;</script>
+<script>window.FIGURE_DETAIL=/*__DETAIL__*/;</script>
+<script>/*__APP__*/</script>
+</body>
+</html>
