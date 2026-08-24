@@ -19,8 +19,7 @@ format:
 :::{.doc-authors}
 Lauren Orr [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0009-0003-4326-5789),
 Scott Simpkins [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0000-0002-5997-2838),
-Hugo MacDermott-Opeskin [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0000-0002-7393-7457),
-Pat Walters [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0000-0003-2860-7958)
+Hugo MacDermott-Opeskin [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0000-0002-7393-7457)
 :::
 
 ## Introduction
@@ -164,7 +163,7 @@ In the recent OpenADMET PXR blind challenge, the margin between the top finisher
 
 ## Acknowledgements
 
-The authors would like to acknowledge experimental data, analysis and scientific input contributed by **Ayesha Ghazali, Ana Lindahl, Robert Warneford-Thompson, Sean Colby, Nathan Abell and Naomi Handly** for this blog post.
+The authors would like to acknowledge experimental data, analysis and scientific input contributed by **Ayesha Ghazali, Ana Lindahl, Robert Warneford-Thompson, Sean Colby, Nathan Abell, Naomi Handly, and Pat Walters** for this blog post.
 
 We would also like to acknowledge technical support for our CYP assay development from SCIEX and Discovery Life Sciences.
 
