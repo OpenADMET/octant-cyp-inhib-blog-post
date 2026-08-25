@@ -59,6 +59,17 @@ main li { margin-bottom: 0.4em; }
   line-height: 1.8;
 }
 
+/* Center the full-width image that introduces the post */
+.title-image {
+  margin: 0 auto 2.5em;
+}
+
+.title-image img {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+}
+
 .doc-version {
   font-size: 0.78em;
   color: #888;

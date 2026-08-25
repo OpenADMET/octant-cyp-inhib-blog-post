@@ -54,7 +54,9 @@ want "progress header present"  "$HTML" 'class="progress-header"'
 want "reading progress track"   "$HTML" 'reading-progress-fill'
 want "left ToC"                 "$HTML" 'quarto-sidebar-toc-left'
 want "og:url absolute"          "$HTML" 'og:url"? content="https://openadmet\.github\.io/octant-cyp-inhib-blog-post/'
-want "og:image absolute"        "$HTML" 'og:image"? content="https://openadmet\.github\.io/octant-cyp-inhib-blog-post/post/assets/og-preview\.png'
+want "og:image absolute"        "$HTML" 'og:image"? content="https://openadmet\.github\.io/octant-cyp-inhib-blog-post/post/assets/title-image\.jpeg'
+want "title image present"      "$HTML" 'class="title-image"'
+want "title image alt text"     "$HTML" 'alt="Just a CYP might lower your inhibitions\.\.\."'
 want "publication date"         "$HTML" 'August 24, 2026'
 want "author block"             "$HTML" 'class="doc-authors"'
 # Count well-formed ORCID iDs in the source and require the same number to reach
@@ -134,7 +136,7 @@ echo "== declared resources =="
 # its logo or its social-card image.
 for f in post/figures/figure1.webp post/figures/figure2.webp post/figures/figure3.webp \
          post/figures/figure4.webp post/figures/figure5.webp post/figures/figure6.webp \
-         post/assets/openadmet-logo.png post/assets/og-preview.png; do
+         post/assets/openadmet-logo.png post/assets/title-image.jpeg; do
   if [[ -f "_site/$f" ]]; then printf '  ok   resource %s\n' "$f"
   else printf '  FAIL resource %s missing from _site\n' "$f"; fails=$((fails+1)); fi
 done

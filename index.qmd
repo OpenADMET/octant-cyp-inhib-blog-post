@@ -7,13 +7,13 @@ format:
       - text: |
           <meta property="og:title" content="Lowering Inhibitions, One CYP at a Time" />
           <meta property="og:description" content="How we built the OpenADMET CYP inhibition and time-dependent inhibition dataset across CYP1A2, CYP2C9, CYP2D6 and CYP3A4." />
-          <meta property="og:image" content="https://openadmet.github.io/octant-cyp-inhib-blog-post/post/assets/og-preview.png" />
+          <meta property="og:image" content="https://openadmet.github.io/octant-cyp-inhib-blog-post/post/assets/title-image.jpeg" />
           <meta property="og:url" content="https://openadmet.github.io/octant-cyp-inhib-blog-post/" />
           <meta property="og:type" content="article" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="Lowering Inhibitions, One CYP at a Time" />
           <meta name="twitter:description" content="How we built the OpenADMET CYP inhibition and time-dependent inhibition dataset across CYP1A2, CYP2C9, CYP2D6 and CYP3A4." />
-          <meta name="twitter:image" content="https://openadmet.github.io/octant-cyp-inhib-blog-post/post/assets/og-preview.png" />
+          <meta name="twitter:image" content="https://openadmet.github.io/octant-cyp-inhib-blog-post/post/assets/title-image.jpeg" />
 ---
 
 :::{.doc-authors}
@@ -21,6 +21,10 @@ Lauren Orr [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0009-0003-4326-578
 Scott Simpkins [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0000-0002-5997-2838),
 Hugo MacDermott-Opeskin [{{< ai orcid color=#a6ce39 >}}](https://orcid.org/0000-0002-7393-7457)
 :::
+
+<div class="title-image">
+<img src="post/assets/title-image.jpeg" alt="Just a CYP might lower your inhibitions...">
+</div>
 
 ## Introduction
 
