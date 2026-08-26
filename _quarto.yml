@@ -4,7 +4,7 @@ project:
     - index.qmd
   resources:
     - post/assets/openadmet-logo.png
-    - post/assets/og-preview.png
+    - post/assets/title-image.jpeg
     - figures/embed/**
 
 format:
