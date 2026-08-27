@@ -167,7 +167,7 @@
 
   function renderPanel(enzyme) {
     const raw = activeCompounds(enzyme);
-    // The annotated classes are ~370 of 6,897 points — draw them after
+    // The annotated classes are ~370 points — draw them after
     // Unknown so they sit on top of the cloud instead of vanishing under it.
     // d3's keyed join inserts newly-entering nodes in data order, so this
     // ordering holds up across re-filtering (e.g. toggling a class off and
@@ -210,17 +210,31 @@
       .attr("fill-opacity", c=>isSig(c)?0.75:0.4)
       .attr("stroke", c=>isSig(c)?COL.sig:"none").attr("stroke-opacity",0.5);
     if (state.pinned && state.pinned.enzyme===enzyme && !data.some(c=>keyOf(c)===state.pinned.key)) clearSelection();
-    return data.length;
+    // Returns the rows actually drawn, not just how many: renderAll needs the
+    // compound ids to count distinct molecules, which is not derivable from a
+    // point tally.
+    return data;
   }
 
+  // compound_id is OCNT-XXXXXXX-YY-ZZZ. The molecule is the part before the
+  // batch suffix, so two batches of the same compound count once.
+  const molOf = id => (String(id).match(/^OCNT-\d+/) || [id])[0];
+  const fmtN = n => n.toLocaleString("en-US");
+
   function renderAll() {
-    let total = 0;
+    const shown = [];
     // Reference lines are derived from the live thresholds/mode, so they are
     // redrawn alongside the points on every render — a threshold control
     // that recolours the scatter but leaves the guide line behind would tell
     // the reader the wrong story about what the threshold means.
-    ENZYMES.forEach(e => { drawRefLines(e); total += renderPanel(e); });
-    d3.select("#count").text(`${total} compounds`);
+    ENZYMES.forEach(e => { drawRefLines(e); shown.push(...renderPanel(e)); });
+    // One point is one compound in one enzyme, and control compounds are drawn
+    // once per plate, so the number of marks on screen is well above the number
+    // of compounds. Reporting a single number as "compounds" invited exactly
+    // that misreading, so report both and label each for what it is.
+    const molecules = new Set(shown.map(c => molOf(c.compound_id)));
+    d3.select("#count").text(
+      `${fmtN(molecules.size)} compounds \u00b7 ${fmtN(shown.length)} compound\u00d7enzyme pairs`);
   }
 
   // ---- Chemical structure (RDKit-JS/WASM, vendored in src/RDKit_minimal.{js,wasm}) ---
