@@ -245,7 +245,7 @@ test_that("shared_concs keys on (run, pair_id, condition), not pair_id alone", {
 test_that("shared_concs splits by condition too: mismatched per-condition ranges don't pool", {
   # The bug this guards against: the same (run, pair_id) compound whose two
   # preincubation conditions were fitted over DIFFERENT concentration ranges
-  # (22/6896 in the real dataset). Keying on (run, pair_id) alone pools both
+  # (22/6894 in the real dataset). Keying on (run, pair_id) alone pools both
   # conditions' conc_m into one spurious union that matches neither condition's
   # real series — which is exactly how a 250-point y-vector ends up plotted
   # against a 499-point x-vector. Keying on condition too must yield the two

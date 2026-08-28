@@ -18,9 +18,11 @@ hierarchical structure between them; independence is what makes elementwise
 draw subtraction and a product-form joint density valid below.
 
 The join key is `(run, pair_id)` — `pair_id` restarts at 1 in every run, so
-`run` must be part of the key. The dataset covers **6,896 compound pairs
-across ten runs**: 1,500 / 1,337 / 1,584 / 2,475 for CYP1A2 / CYP2C9 / CYP2D6
-/ CYP3A4 respectively.
+`run` must be part of the key. The dataset covers **6,894 compound×enzyme pairs across ten runs**,
+drawn from **4,912 distinct compounds**: 1,499 / 1,337 / 1,583 / 2,475 pairs
+for CYP1A2 / CYP2C9 / CYP2D6 / CYP3A4 respectively. Pairs exceed compounds
+because most compounds were followed up against more than one enzyme, and
+because the eleven control compounds recur once per plate.
 
 The potency parameter is **pEC50** (posterior mean and central-95% CI, the
 `posterior`/`brms` default: mean + q2.5/q97.5). Its prior has a hard floor at
@@ -37,7 +39,7 @@ publishes the semantic TDI annotation alongside it, as a separate
 
 | Raw `compound_class` | Enzyme | Label shown in the figure | n |
 |---|---|---|---|
-| `Library` | any | `Unknown` | 6,526 |
+| `Library` | any | `Unknown` | 6,524 |
 | `Process Control` | any | `TDI (control)` | 132 |
 | `Positive Control` | any | `Non-TDI (control)` | 132 |
 | `Other Control` | `CYP1A2`, `CYP3A4` | `TDI (literature)` | 76 |
@@ -95,9 +97,9 @@ a compound can have a deck with no name (Discovery Diversity has no common
 names to give at all) or a name with no deck (the reference compounds,
 which were never purchased from either Enamine deck).
 
-**Coverage, measured against the current build:** 317 of 4,916 distinct
-compounds are named (796 of 6,896 index rows), and 4,324 of 4,916 are
-deck-annotated (5,963 of 6,896 index rows). Naming is **partial by
+**Coverage, measured against the current build:** 317 of 4,915 distinct
+compounds are named (794 of 6,894 index rows), and 4,323 of 4,915 are
+deck-annotated (5,961 of 6,894 index rows). Naming is **partial by
 design** — Discovery Diversity is novel chemistry with no common name to
 give, and even within the FDA-Approved deck, complete coverage was never a
 requirement (a compound can lack a resolvable Z-number, or have a
@@ -210,7 +212,7 @@ only at `ρ = −1`. Escaping that needs both asymmetric posteriors — live her
 because these are empirical MCMC quantiles rather than normal-theory intervals —
 and strong negative dependence between the two conditions. Neither is present:
 the shift interval is narrower than the summed marginal widths for every one of
-the 6,896 compounds (median ratio 0.72, maximum 0.959), nowhere near the
+the 6,894 compounds (median ratio 0.72, maximum 0.959), nowhere near the
 `ρ = −1` boundary, and the nearest mode-2 compound to failing mode 3 sits at
 `shift.q2.5 = +0.080`.
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # parquet -> build/figure_index.json + build/figure_detail_<ENZYME>.json
 #
-# Serial by design: duckdb does the summaries in ~2 s and R does all 6,896
+# Serial by design: duckdb does the summaries in ~2 s and R does all 6,894
 # compounds' KDEs and contours in ~1.4 min. Parallelism is not warranted.
 
 suppressPackageStartupMessages({library(jsonlite)})

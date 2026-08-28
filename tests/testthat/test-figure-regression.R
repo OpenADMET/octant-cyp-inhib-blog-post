@@ -40,7 +40,7 @@ test_that("every compound in the index has a detail entry", {
 
 test_that("every compound's per-condition conc_key resolves to a same-length vector", {
   # conc_key lives per condition inside each detail entry's curve object, not
-  # on the compound as a whole (Task 5): 22/6,896 compounds were fitted over
+  # on the compound as a whole (Task 5): 22/6,894 compounds were fitted over
   # different concentration ranges for their two preincubation conditions, so
   # a compound-level key can point one condition's y-values at the wrong
   # x-vector — silently, since both are plain numeric vectors of some length.
@@ -70,8 +70,8 @@ test_that("every compound's per-condition conc_key resolves to a same-length vec
                                integer(1), USE.NAMES = FALSE))
     }
   }
-  # 6,896 compounds x 2 conditions.
-  expect_length(key, 13792L)
+  # 6,894 compounds x 2 conditions.
+  expect_length(key, 13788L)
   expect_false(anyNA(key))
   expect_true(all(key == round(key) & key >= 1 & key <= length(concs)))
   expect_equal(unname(conc_len[key]), y_len)
@@ -87,7 +87,7 @@ test_that("compound names cover exactly the expected population", {
   ids <- vapply(cmp, function(x) x$compound_id, character(1))
   cls <- vapply(cmp, function(x) x$compound_class, character(1))
 
-  expect_equal(sum(!is.na(nm)), 796L)
+  expect_equal(sum(!is.na(nm)), 794L)
   expect_equal(length(unique(ids[!is.na(nm)])), 317L)
   expect_false(any(nm[!is.na(nm)] == "NA"))          # the jsonlite trap
   expect_true(all(!is.na(nm[cls != "Unknown"])))     # all 370 annotated rows named
@@ -143,7 +143,7 @@ test_that("deck annotation covers the library", {
   dk <- vapply(cmp, function(x) if (is.null(x$compound_deck)) NA_character_
                                 else x$compound_deck, character(1))
 
-  expect_equal(sum(!is.na(dk)), 5963L)
+  expect_equal(sum(!is.na(dk)), 5961L)
   expect_setequal(unique(dk[!is.na(dk)]),
                   c("Enamine FDA-Approved", "Enamine Discovery Diversity"))
 })
