@@ -1,5 +1,5 @@
 # Reads the published parquet through duckdb. All of this layer is SQL: dbplyr
-# emits it, duckdb runs it. Measured at 2.4 s for all 6,896 pairs.
+# emits it, duckdb runs it. Measured at 2.4 s for all 6,894 pairs.
 suppressPackageStartupMessages({
   library(DBI); library(duckdb); library(dplyr); library(dbplyr)
 })
@@ -186,7 +186,7 @@ drc_y_bounds <- function(curves_df, points_df) {
 shared_concs <- function(curves_df) {
   # pair_id restarts at 1 in every run, so splitting on it alone pools different
   # runs' concentration series into unions that match no real compound. The two
-  # conditions of the SAME (run, pair_id) can also differ (22/6896 compounds in
+  # conditions of the SAME (run, pair_id) can also differ (22/6894 compounds in
   # the real dataset were fitted over different ranges for inactive vs. active
   # preincubation), so key on condition too — otherwise those pairs pool into a
   # spurious union that matches neither condition's real series.
