@@ -97,9 +97,11 @@ a compound can have a deck with no name (Discovery Diversity has no common
 names to give at all) or a name with no deck (the reference compounds,
 which were never purchased from either Enamine deck).
 
-**Coverage, measured against the current build:** 317 of 4,915 distinct
+**Coverage, measured against the current build:** 316 of 4,915 distinct
 compounds are named (794 of 6,894 index rows), and 4,323 of 4,915 are
-deck-annotated (5,961 of 6,894 index rows). Naming is **partial by
+deck-annotated (5,961 of 6,894 index rows). These count distinct
+`compound_id`; the 316 named ids cover 315 distinct molecules, since one
+compound is registered under two batches. Naming is **partial by
 design** — Discovery Diversity is novel chemistry with no common name to
 give, and even within the FDA-Approved deck, complete coverage was never a
 requirement (a compound can lack a resolvable Z-number, or have a

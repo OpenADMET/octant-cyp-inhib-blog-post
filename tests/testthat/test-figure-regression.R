@@ -88,7 +88,7 @@ test_that("compound names cover exactly the expected population", {
   cls <- vapply(cmp, function(x) x$compound_class, character(1))
 
   expect_equal(sum(!is.na(nm)), 794L)
-  expect_equal(length(unique(ids[!is.na(nm)])), 317L)
+  expect_equal(length(unique(ids[!is.na(nm)])), 316L)
   expect_false(any(nm[!is.na(nm)] == "NA"))          # the jsonlite trap
   expect_true(all(!is.na(nm[cls != "Unknown"])))     # all 370 annotated rows named
   expect_equal(unique(nm[ids == "OCNT-1911798-AQ-002"]), "Fluoxetine")
@@ -96,11 +96,14 @@ test_that("compound names cover exactly the expected population", {
 
 test_that("each named compound carries the right name, not merely a name", {
   # The counts above are all satisfied by a permutation: shuffling
-  # compound_name across the named rows leaves 796 named, 317 distinct, every
+  # compound_name across the named rows leaves 794 named, 316 distinct, every
   # annotated row named and fluoxetine pinned, while propranolol renders as
   # "Flufenamic acid". Demonstrated on a mutated copy of the index: pinning
-  # fluoxetine and shuffling the rest left 748 of 796 rows wrong with all five
-  # assertions still green. This test is what fails on that index.
+  # fluoxetine and shuffling the rest left the overwhelming majority of named
+  # rows wrong with all five assertions still green. This test is what fails
+  # on that index. (The original demonstration was 748 of 796 rows, run
+  # against the pre-exclusion build; the point does not depend on the exact
+  # tally, so it is not restated as a number that has to be maintained.)
   skip_if_not(file.exists(IDX), "run scripts/build_figure_data.R first")
   idx <- jsonlite::fromJSON(file.path(BUILD, "figure_index.json"),
                             simplifyDataFrame = FALSE)
@@ -109,15 +112,17 @@ test_that("each named compound carries the right name, not merely a name", {
                                 else x$compound_name, character(1))
   ids <- vapply(cmp, function(x) x$compound_id, character(1))
 
-  # One pair per named compound: 317 unique pairs from 796 rows is itself the
+  # One pair per named compound: 316 unique pairs from 794 rows is itself the
   # assertion that a compound never carries two different names across runs.
+  # Counted on compound_id, not molecule: the 316 distinct named compound_ids
+  # cover 315 distinct molecules, one of them registered under two batches.
   pairs <- sort(unique(paste(ids[!is.na(nm)], nm[!is.na(nm)], sep = "\t")))
-  expect_equal(length(pairs), 317L)
+  expect_equal(length(pairs), 316L)
   # serialize = FALSE hashes the bytes rather than an R serialisation header,
   # so the digest does not move with the R version.
   expect_equal(digest::digest(paste(pairs, collapse = "\n"),
                               algo = "sha256", serialize = FALSE),
-               "4bbb6217b9c1038cdef6c1dcd1856e6e102e70761fec8327d0e1727f388cb9a1")
+               "c1af0bc0dab892c9c16365c2009b77b36426ee560bc731cd0418cc8a71ba9dad")
 
   # The digest says "something changed"; these say what it should have been.
   # The two typo corrections, and vendor names that ship as-is -- the salt
