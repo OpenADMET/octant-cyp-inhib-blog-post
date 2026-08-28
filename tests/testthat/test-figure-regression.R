@@ -5,8 +5,10 @@ IDX <- file.path(BUILD, "figure_index.json")
 DATA <- Sys.getenv("CYP_DATA_DIR", unset = "../../scratch/data")
 
 test_that("the index reproduces the parquet's pEC50 summaries", {
-  skip_if_not(file.exists(IDX), "run scripts/build_figure_data.R first")
-  skip_if_not(dir.exists(DATA), "parquet not available")
+  require_input(file.exists(IDX), IDX,
+               "Rscript scripts/build_figure_data.R --data <parquet>")
+  require_input(dir.exists(DATA), DATA,
+               "stage the parquet, or point CYP_DATA_DIR at it (see README)")
   source("../../R/stats_shift.R"); source("../../R/figure_data.R")
 
   j <- jsonlite::fromJSON(IDX, simplifyDataFrame = TRUE)
@@ -27,11 +29,13 @@ test_that("the index reproduces the parquet's pEC50 summaries", {
 })
 
 test_that("every compound in the index has a detail entry", {
-  skip_if_not(file.exists(IDX), "run scripts/build_figure_data.R first")
+  require_input(file.exists(IDX), IDX,
+               "Rscript scripts/build_figure_data.R --data <parquet>")
   j <- jsonlite::fromJSON(IDX, simplifyDataFrame = TRUE)
   for (e in j$meta$enzymes) {
     p <- sprintf("../../build/figure_detail_%s.json", e)
-    skip_if_not(file.exists(p), paste("no detail for", e))
+    require_input(file.exists(p), p,
+                    "Rscript scripts/build_figure_data.R --data <parquet>")
     d <- jsonlite::fromJSON(p, simplifyVector = FALSE)
     want <- with(j$compounds[j$compounds$enzyme == e, ], paste0(run, ":", pair_id))
     expect_length(setdiff(want, names(d)), 0)
@@ -46,7 +50,8 @@ test_that("every compound's per-condition conc_key resolves to a same-length vec
   # x-vector — silently, since both are plain numeric vectors of some length.
   # The length check below is what would have caught that: a wrong-but-valid
   # index (in range, integer) can still point at a vector of the wrong length.
-  skip_if_not(file.exists(IDX), "run scripts/build_figure_data.R first")
+  require_input(file.exists(IDX), IDX,
+               "Rscript scripts/build_figure_data.R --data <parquet>")
   j <- jsonlite::fromJSON(IDX, simplifyDataFrame = TRUE)
 
   # simplifyVector's default folds a list of same-length numeric vectors into
@@ -60,7 +65,8 @@ test_that("every compound's per-condition conc_key resolves to a same-length vec
   key <- numeric(0); y_len <- integer(0)
   for (e in j$meta$enzymes) {
     p <- sprintf("../../build/figure_detail_%s.json", e)
-    skip_if_not(file.exists(p), paste("no detail for", e))
+    require_input(file.exists(p), p,
+                    "Rscript scripts/build_figure_data.R --data <parquet>")
     d <- jsonlite::fromJSON(p, simplifyVector = FALSE)
 
     for (cond in c("inactive", "active")) {
@@ -78,7 +84,8 @@ test_that("every compound's per-condition conc_key resolves to a same-length vec
 })
 
 test_that("compound names cover exactly the expected population", {
-  skip_if_not(file.exists(IDX), "run scripts/build_figure_data.R first")
+  require_input(file.exists(IDX), IDX,
+               "Rscript scripts/build_figure_data.R --data <parquet>")
   idx <- jsonlite::fromJSON(file.path(BUILD, "figure_index.json"),
                             simplifyDataFrame = FALSE)
   cmp <- idx$compounds
@@ -104,7 +111,8 @@ test_that("each named compound carries the right name, not merely a name", {
   # on that index. (The original demonstration was 748 of 796 rows, run
   # against the pre-exclusion build; the point does not depend on the exact
   # tally, so it is not restated as a number that has to be maintained.)
-  skip_if_not(file.exists(IDX), "run scripts/build_figure_data.R first")
+  require_input(file.exists(IDX), IDX,
+               "Rscript scripts/build_figure_data.R --data <parquet>")
   idx <- jsonlite::fromJSON(file.path(BUILD, "figure_index.json"),
                             simplifyDataFrame = FALSE)
   cmp <- idx$compounds
@@ -141,7 +149,8 @@ test_that("each named compound carries the right name, not merely a name", {
 })
 
 test_that("deck annotation covers the library", {
-  skip_if_not(file.exists(IDX), "run scripts/build_figure_data.R first")
+  require_input(file.exists(IDX), IDX,
+               "Rscript scripts/build_figure_data.R --data <parquet>")
   idx <- jsonlite::fromJSON(file.path(BUILD, "figure_index.json"),
                             simplifyDataFrame = FALSE)
   cmp <- idx$compounds
